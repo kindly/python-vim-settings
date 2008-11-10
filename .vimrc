@@ -28,11 +28,20 @@ def saveandrunnose():
 	vim.command(r":!nosetests")
 EOL
 
+python << EOL
+import vim
+def saveandrunpython():
+	vim.command(r":w")
+	vim.command(r":!python -i %")
+EOL
+
 set suffixesadd=.py
 
 map <C-e> :py EvaluateCurrentRange()<CR>
 map <silent><A-Right> :tabnext<CR>
 map <silent><A-Left> :tabprevious<CR>
+map <silent><A-k> :tabnext<CR>
+map <silent><A-j> :tabprevious<CR>
 map <silent><C-F> <C-w>gf
 map <silent><C-N> :tabnew<CR>
 map <silent><C-S-S> :vsplit<CR>
@@ -45,7 +54,8 @@ map <silent><C-Up> <C-w>k
 map <silent><C-Down> <C-w>j
 map <silent><C-left> <C-w>h
 map <silent><C-Right> <C-w>l
-map :inoremap <C-space> <C-x><C-n>
+inoremap <Nul> <C-x><C-n>
 
+map <F5> :py saveandrunpython()<CR>
 map <F6> :py saveandrunnose()<CR>
 map <F8> :!git commit -a<CR>
