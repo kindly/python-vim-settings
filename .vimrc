@@ -7,7 +7,7 @@ for p in sys.path:
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
 
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType python set omnifunc=pysmell#Complete
 set tags+=$HOME/.vim/tags/python.ctags
 syntax on
 set hlsearch
@@ -25,7 +25,7 @@ python << EOL
 import vim
 def saveandrunnose():
 	vim.command(r":w")
-	vim.command(r":!nosetests")
+	vim.command(r":NoseTest")
 EOL
 
 python << EOL
