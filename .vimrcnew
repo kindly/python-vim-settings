@@ -76,7 +76,7 @@ set guioptions-=T
 map <F5> :py saveandrunpython()<CR>
 map <F6> :py saveandrunnose()<CR>
 map <F9> :py opentraceback()<CR>
-map <F8> :!git commit -a<CR>
+map <F8> :GitCommit -a<CR>
 colorscheme = wombat
 
 python << EOF

@@ -100,4 +100,3 @@ def vimcompletePYSMELL(origSource, origLineNo, origCol, base):
     vim.command('let g:pysmell_completions = %s' % (translated, ))
  
 eopython
- 

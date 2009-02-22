@@ -1,7 +1,7 @@
 setlocal tabstop=4
 setlocal softtabstop=4
 setlocal shiftwidth=4
-setlocal textwidth=80
+setlocal textwidth=200
 setlocal smarttab
 setlocal expandtab
 setlocal smartindent
@@ -51,3 +51,5 @@ def RemoveBreakpoints():
 
 vim.command( 'map <s-f7> :py RemoveBreakpoints()<cr>')
 EOF
+
+
