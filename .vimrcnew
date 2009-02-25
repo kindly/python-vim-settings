@@ -78,6 +78,8 @@ map <F6> :py saveandrunnose()<CR>
 map <F9> :py opentraceback()<CR>
 map <F8> :GitCommit -a<CR>
 colorscheme = wombat
+set wildmode=longest,list
+
 
 python << EOF
 import os
