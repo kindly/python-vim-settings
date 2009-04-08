@@ -80,6 +80,17 @@ function! GitDiff(args)
     setlocal filetype=git-diff
 endfunction
 
+function! GitDiffAll(args)
+    let git_output = system('git diff ' . a:args )
+    if !strlen(git_output)
+        echo "No output from git command"
+        return
+    endif
+
+    call <SID>OpenGitBuffer(git_output)
+    setlocal filetype=git-diff
+endfunction
+
 " Show Status.
 function! GitStatus()
     let git_output = system('git status')
@@ -228,6 +239,7 @@ endfunction
 
 command! -nargs=1 -complete=customlist,ListGitCommits GitCheckout call GitCheckout(<q-args>)
 command! -nargs=* -complete=customlist,ListGitCommits GitDiff     call GitDiff(<q-args>)
+command! -nargs=* -complete=customlist,ListGitCommits GitDiffAll     call GitDiffAll(<q-args>)
 command!          GitStatus           call GitStatus()
 command! -nargs=? GitAdd              call GitAdd(<q-args>)
 command! -nargs=* GitLog              call GitLog(<q-args>)
