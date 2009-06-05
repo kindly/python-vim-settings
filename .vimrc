@@ -65,6 +65,10 @@ setlocal smartindent
 :nnoremap h a
 :nnoremap G I
 :nnoremap H A
+:vnoremap g i
+:vnoremap h a
+:vnoremap G I
+:vnoremap H A
 
 :nnoremap a g
 :nnoremap A G
@@ -95,7 +99,7 @@ setlocal smartindent
 :noremap <C-p> :py block_action('p')<CR>
 :noremap <C-y> :py block_action('y')<CR>
 
-:nnoremap <CR> g]
+:nnoremap <CR> g<c-]>
 :nnoremap <BS> <c-t>
 :nnoremap <c-cr> :tab sts<cr>
 "some less odd potentially useful keybindings for working with tabs and
@@ -118,7 +122,7 @@ map <silent><C-L> <C-w>l
 map <silent><C-k> <C-w>j
 map <silent><C-i> <C-w>k
 " local or local window competion only
-imap <Nul> <C-x><C-l> 
+inoremap <C-SPACE> <C-x><C-l> 
 set complete=.,w,] "b potentially if want all buffers
 
 "basic options
@@ -135,7 +139,7 @@ set switchbuf=usetab,useopen
 map <F5> :py saveandrunpython()<CR>
 map <C-F5> :py saveandrunipython()<CR>
 map <F6> :py saveandrunnose()<CR>
-map <F4> :NoseThis<CR>
+map <F4> :py saveandrunnosethis()<CR>
 map <F9> :py opentraceback()<CR>
 map <F8> :GitCommit -a<CR>
 map <F10> :py open_from_list()<CR>
@@ -162,7 +166,33 @@ python << EOL
 import vim
 def saveandrunnose():
     vim.command(r":w")
+    buffer = vim.current.buffer.number
     vim.command(r":NoseTest")
+    results = vim.current.buffer
+    for line in results[0:12]:
+        if line[:2] == "OK":
+            vim.command(r":q")
+            vim.command(r"sb %s" % buffer )
+            vim.command("call GreenBar()")
+            print "nose tests fine"
+            break
+EOL
+
+python << EOL
+import vim
+def saveandrunnosethis():
+    vim.command(r":w")
+    buffer = vim.current.buffer.number
+    vim.command(r":NoseThis")
+    results = vim.current.buffer
+    for line in results[0:12]:
+        if line[:2] == "OK":
+            vim.command(r":q")
+            vim.command(r"sb %s" % buffer )
+            vim.command("call GreenBar()")
+            print "nose this file fine"
+            break
+
 EOL
 
 python << EOL
@@ -281,5 +311,20 @@ function! CleverTab()
    else
       return "\<C-N>"
 endfunction
+
 inoremap <Tab> <C-R>=CleverTab()<CR>
+
+function! RedBar()
+    hi RedBar ctermfg=white ctermbg=red guibg=red
+    echohl RedBar
+    echon repeat(" ",&columns - 1)
+    echohl
+endfunction
+
+function! GreenBar()
+    hi GreenBar ctermfg=white ctermbg=green guibg=green
+    echohl GreenBar
+    echon repeat(" ",&columns - 1)
+    echohl
+endfunction
 
