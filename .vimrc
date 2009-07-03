@@ -2,12 +2,12 @@
 set guioptions-=m
 set guioptions-=T
 set showtabline =2 
-setlocal tabstop=4
-setlocal softtabstop=4
-setlocal shiftwidth=4
-setlocal smarttab
-setlocal expandtab
-setlocal smartindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
+set smartindent
 
 " my wierd keybindings, needs a lot of work to get back some functionality
 " especially concerning loss of g key
@@ -121,8 +121,9 @@ map <silent><C-j> <C-w>h
 map <silent><C-L> <C-w>l
 map <silent><C-k> <C-w>j
 map <silent><C-i> <C-w>k
+
 " local or local window competion only
-inoremap <C-SPACE> <C-x><C-l> 
+inoremap <C-SPACE> <C-x><C-l>
 set complete=.,w,] "b potentially if want all buffers
 
 "basic options
@@ -144,6 +145,11 @@ map <F9> :py opentraceback()<CR>
 map <F8> :GitCommit -a<CR>
 map <F10> :py open_from_list()<CR>
 map <C-F10> :py delete_scratch()<CR>
+map <F3> :Jslint<CR>
+
+map <c-F2> :silent !gnome-terminal -e "java -jar ~/.vim/JsTestDriver-1.0b.jar --port 8080 --browser firefox"<CR>
+map <F2> :JsTest<CR>
+
 
 "adds python patha so can find files when used with gf
 python << EOF
@@ -275,7 +281,7 @@ def open_from_list():
 
     output = "".join(word)
 
-    pop = """'python ~/pythonlook/pythonlook.py %s'""" % output 
+    pop = """'python ~/.vim/pythonlook.py %s'""" % output 
     vim.command(r"""let nose_output = system(%s)""" % pop )
     bb = vim.current.buffer
     vim.command(r""":winc l""")
