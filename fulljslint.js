@@ -921,7 +921,7 @@ var JSLINT = (function () {
             quit('Stopping. ', l, ch);
         }
         warnings += 1;
-        if (warnings === 50) {
+        if (warnings === 100) {
             quit("Too many errors.", l, ch);
         }
         return w;

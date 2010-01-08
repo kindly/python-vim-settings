@@ -1,6 +1,7 @@
 "gvim options to get rid of title and add tabs all the time.
 set guioptions-=m
 set guioptions-=T
+set gfn=monospace\ 9
 set showtabline =2 
 set tabstop=4
 set softtabstop=4
@@ -8,6 +9,9 @@ set shiftwidth=4
 set smarttab
 set expandtab
 set smartindent
+
+set statusline=%f\ %2*%m\ %1*%h%r%=[%{&encoding}\ %{&fileformat}\ %{strlen(&ft)?&ft:'none'}\ %{getfperm(@%)}]\ 0x%B\ %12.(%c:%l/%L%)
+set laststatus=2
 
 " my wierd keybindings, needs a lot of work to get back some functionality
 " especially concerning loss of g key
@@ -142,6 +146,7 @@ map <C-F5> :py saveandrunipython()<CR>
 map <F6> :py saveandrunnose()<CR>
 map <F4> :py saveandrunnosethis()<CR>
 map <F9> :py opentraceback()<CR>
+map <C-F3> :py openjslint()<CR>
 map <F8> :GitCommit -a<CR>
 map <F10> :py open_from_list()<CR>
 map <C-F10> :py delete_scratch()<CR>
@@ -232,6 +237,23 @@ def opentraceback():
     vim.command(r":%s" % r.group(2))
 EOL
 
+python << EOL
+import vim
+import re
+def openjslint():
+    (row, col) = vim.current.window.cursor
+    line = vim.current.buffer[row-1] # 0 vs 1 based
+    r = line.split(",")
+    vim.command(r":tabnew %s" % r[0])
+    buffer = vim.current.buffer.number
+    vim.command(r":q")
+    if buffer in [buf.number for buf in vim.buffers]:
+        vim.command(r"tab sb %s" % r[0])
+    else:
+        vim.command(r":tabnew %s" % r[0])
+    vim.command(r":%s" % (int(r[1]) + 1))
+EOL
+
 
 python << EOL
 import vim
@@ -260,42 +282,6 @@ def block_action(action):
         vim.command(":normal %sg%s" % (action, char) )
     else:
         vim.command(":normal %sgw" % action)
-EOL
-
-python << EOL
-import vim
-import re
-def open_from_list():
-    (row, col) = vim.current.window.cursor
-    line = vim.current.buffer[row-1] # 0 vs 1 based
-    word =[]
-    col = col  
-    for letter in line[:col][::-1]:
-        if letter in (" ","(",")","[","]"):
-            break
-        word.insert(0, letter)
-    for letter in line[col:]:
-        if letter in (" ","(",")","[","]"):
-            break
-        word.append(letter)
-
-    output = "".join(word)
-
-    pop = """'python ~/.vim/pythonlook.py %s'""" % output 
-    vim.command(r"""let nose_output = system(%s)""" % pop )
-    bb = vim.current.buffer
-    vim.command(r""":winc l""")
-    cc = vim.current.buffer
-    if bb != cc:
-        vim.command(":q")
-    vim.command(r"""execute 'vnew'""")
-    vim.command(r""":winc L""")
-    vim.command(r""":vertical res 70""")
-    vim.command(r"""setlocal buftype=nofile readonly modifiable""")
-    vim.command(r"""silent put=nose_output""")
-    vim.command(r"""keepjumps 0d""")
-    vim.command(r"""setlocal nomodifiable""")
-    vim.command(r""":winc h""")
 EOL
 
 python << EOL

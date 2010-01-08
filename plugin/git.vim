@@ -13,6 +13,7 @@ nnoremap <Leader>gl :GitLog<Enter>
 nnoremap <Leader>ga :GitAdd<Enter>
 nnoremap <Leader>gA :GitAdd <cfile><Enter>
 nnoremap <Leader>gc :GitCommit<Enter>
+nnoremap <Leader>dd :DiffOff<Enter>
 
 " Ensure b:git_dir exists.
 function! s:GetGitDir()
@@ -69,15 +70,42 @@ function! ListGitCommits(arg_lead, cmd_line, cursor_pos)
 endfunction
 
 " Show diff.
+"function! GitDiff(args)
+    "let git_output = system('git diff ' . a:args . ' -- ' . s:Expand('%'))
+    "if !strlen(git_output)
+        "echo "No output from git command"
+        "return
+    "endif
+
+    "call <SID>OpenGitBuffer(git_output)
+    "setlocal filetype=git-diff
+"endfunction
+"
+" Show diff.
 function! GitDiff(args)
-    let git_output = system('git diff ' . a:args . ' -- ' . s:Expand('%'))
+    let git_output = system('git show master:' . s:Expand('%'))
+    let t:git_vimdiff_original_bufnr = bufnr('%')
+    diffthis
+    rightb vnew
+    let t:git_vimdiff_diff = bufnr('%')
+    setlocal buftype=nofile readonly modifiable
     if !strlen(git_output)
         echo "No output from git command"
         return
     endif
-
-    call <SID>OpenGitBuffer(git_output)
+    silent put=git_output
+    diffthis
+    setlocal nomodifiable
+    let b:is_git_msg_buffer = 1
     setlocal filetype=git-diff
+    diffupdate
+    execute  'sb '. t:git_vimdiff_original_bufnr
+endfunction
+
+function! DiffOff()
+    execute  'sb '. t:git_vimdiff_diff
+    diffoff!
+    q
 endfunction
 
 function! GitDiffAll(args)
@@ -241,6 +269,7 @@ command! -nargs=1 -complete=customlist,ListGitCommits GitCheckout call GitChecko
 command! -nargs=* -complete=customlist,ListGitCommits GitDiff     call GitDiff(<q-args>)
 command! -nargs=* -complete=customlist,ListGitCommits GitDiffAll     call GitDiffAll(<q-args>)
 command!          GitStatus           call GitStatus()
+command!          DiffOff             call DiffOff()
 command! -nargs=? GitAdd              call GitAdd(<q-args>)
 command! -nargs=* GitLog              call GitLog(<q-args>)
 command! -nargs=* GitCommit           call GitCommit(<q-args>)
