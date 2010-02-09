@@ -152,9 +152,9 @@ map <F10> :py open_from_list()<CR>
 map <C-F10> :py delete_scratch()<CR>
 map <F3> :Jslint<CR>
 
-map <c-F2> :silent !gnome-terminal -e "java -jar ~/.vim/JsTestDriver-1.0b.jar --port 8080 --browser firefox"<CR>
-map <F2> :JsTest<CR>
+map <c-F2> :silent !gnome-terminal -e "java -jar /home/david/.vim/JsTestDriver-1.2.jar --port 9876 --browser firefox-3.6 --captureConsole "<CR>
 
+map <F2> :JsTest<CR>
 
 "adds python patha so can find files when used with gf
 python << EOF
