@@ -130,6 +130,15 @@ map <silent><C-i> <C-w>k
 inoremap <C-SPACE> <C-x><C-l>
 set complete=.,w,] "b potentially if want all buffers
 
+"tlist
+let Tlist_Use_Right_Window = 1
+let Tlist_Show_One_File = 1
+map <leader>tl :TlistToggle<CR>
+
+"nerd tree
+map <leader>dt :NERDTreeToggle<CR>
+let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
+
 "basic options
 syntax on
 set hlsearch
@@ -155,6 +164,8 @@ map <F3> :Jslint<CR>
 map <c-F2> :silent !gnome-terminal -e "java -jar /home/david/.vim/JsTestDriver-1.2.jar --port 9876 --browser firefox-3.6 --captureConsole "<CR>
 
 map <F2> :JsTest<CR>
+
+map <leader>cd :cd %:p:h<CR>
 
 "adds python patha so can find files when used with gf
 python << EOF

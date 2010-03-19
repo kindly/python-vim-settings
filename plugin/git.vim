@@ -83,7 +83,7 @@ endfunction
 "
 " Show diff.
 function! GitDiff(args)
-    let git_output = system('git show master:' . s:Expand('%'))
+    let git_output = system('git show @{0}:' . s:Expand('%'))
     let t:git_vimdiff_original_bufnr = bufnr('%')
     diffthis
     rightb vnew
