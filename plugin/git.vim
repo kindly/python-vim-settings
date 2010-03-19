@@ -1,5 +1,5 @@
 if !exists('g:git_command_edit')
-    let g:git_command_edit = 'new'
+    let g:git_command_edit = 'tabnew'
 endif
 
 if !exists('g:git_bufhidden')
@@ -11,9 +11,10 @@ nnoremap <Leader>gD :GitDiff --cached<Enter>
 nnoremap <Leader>gs :GitStatus<Enter>
 nnoremap <Leader>gl :GitLog<Enter>
 nnoremap <Leader>ga :GitAdd<Enter>
-nnoremap <Leader>gA :GitAdd <cfile><Enter>
+nnoremap <Leader>gA :GitAdd <cile><Enter>
 nnoremap <Leader>gc :GitCommit<Enter>
 nnoremap <Leader>dd :DiffOff<Enter>
+nnoremap <Leader>da :GitDiffAll<Enter>
 
 " Ensure b:git_dir exists.
 function! s:GetGitDir()
