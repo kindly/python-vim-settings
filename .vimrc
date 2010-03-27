@@ -127,7 +127,7 @@ map <silent><C-k> <C-w>j
 map <silent><C-i> <C-w>k
 
 " local or local window competion only
-inoremap <C-SPACE> <C-x><C-l>
+"inoremap <C-SPACE> <C-x><C-l>
 set complete=.,w,] "b potentially if want all buffers
 
 "tlist
@@ -138,6 +138,17 @@ map <leader>tl :TlistToggle<CR>
 "nerd tree
 map <leader>dt :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
+
+"fuzzy
+
+noremap <c-O> :FufFile! **/<cr>
+noremap <c-U> :FufMruFile!<cr>
+
+let g:fuf_mrufile_maxItem = 300
+let g:fuf_mrucmd_maxItem = 400
+let g:fuf_modesDisable = []
+let g:fuf_keyOpenTabpage = '<cr>'
+let g:fuf_keyOpen = '<c-l>'
 
 "basic options
 syntax on
@@ -166,6 +177,19 @@ map <c-F2> :silent !gnome-terminal -e "java -jar /home/david/.vim/JsTestDriver-1
 map <F2> :JsTest<CR>
 
 map <leader>cd :cd %:p:h<CR>
+
+noremap <leader>cn g,
+noremap <leader>cp g;
+noremap <leader>cf g,
+noremap <leader>cb g;
+
+noremap <leader>jf <C-i>
+noremap <leader>jb <C-o>
+noremap <leader>jn <C-i>
+noremap <leader>jp <C-o>
+
+
+noremap <c-U> :FufMruFile!<cr>
 
 "adds python patha so can find files when used with gf
 python << EOF
