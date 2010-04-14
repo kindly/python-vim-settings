@@ -63,7 +63,9 @@ set laststatus=2
 :onoremap J <Home>
 
 :noremap <m-i> gg
+:noremap <leader>i gg
 :noremap <m-k> G
+:noremap <leader>k G
 
 :nnoremap g i
 :nnoremap h a
@@ -79,7 +81,10 @@ set laststatus=2
 
 
 :noremap <m-j> :tabprevious<CR>
+:noremap <leader>j :tabprevious<CR>
 :noremap <m-l> :tabnext<CR>
+:noremap <leader>l :tabnext<CR>
+
 :noremap <c-s> :w<CR>
 :noremap <m-s> :wa<CR>
 :noremap <c-q> :q<CR>
@@ -180,13 +185,15 @@ map <leader>cd :cd %:p:h<CR>
 
 noremap <leader>cn g,
 noremap <leader>cp g;
+noremap <leader>cl g;
 noremap <leader>cf g,
 noremap <leader>cb g;
 
-noremap <leader>jf <C-i>
-noremap <leader>jb <C-o>
-noremap <leader>jn <C-i>
-noremap <leader>jp <C-o>
+noremap <leader>hf <C-i>
+noremap <leader>hb <C-o>
+noremap <leader>hl <C-o>
+noremap <leader>hn <C-i>
+noremap <leader>hp <C-o>
 
 
 noremap <c-U> :FufMruFile!<cr>
