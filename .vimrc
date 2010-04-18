@@ -1,7 +1,7 @@
 "gvim options to get rid of title and add tabs all the time.
 set guioptions-=m
 set guioptions-=T
-set gfn=monospace\ 9
+set gfn=monospace\ 8
 set showtabline =2 
 set tabstop=4
 set softtabstop=4
@@ -9,10 +9,11 @@ set shiftwidth=4
 set smarttab
 set expandtab
 set smartindent
-
 set statusline=%f\ %2*%m\ %1*%h%r%=[%{&encoding}\ %{&fileformat}\ %{strlen(&ft)?&ft:'none'}\ %{getfperm(@%)}]\ 0x%B\ %12.(%c:%l/%L%)
 set laststatus=2
-
+let leave_my_cursor_position_alone=1
+set enc=utf-8
+set backspace=2
 " my wierd keybindings, needs a lot of work to get back some functionality
 " especially concerning loss of g key
 :nnoremap j h
@@ -154,6 +155,7 @@ let g:fuf_mrucmd_maxItem = 400
 let g:fuf_modesDisable = []
 let g:fuf_keyOpenTabpage = '<cr>'
 let g:fuf_keyOpen = '<c-l>'
+let g:fuf_mrufile_exclude = '\.tmp$'
 
 "basic options
 syntax on
@@ -166,8 +168,8 @@ colorscheme = wombat
 set tags=./../tags,./tags
 set switchbuf=usetab,useopen 
 "runstuff
-map <F5> :py saveandrunpython()<CR>
-map <C-F5> :py saveandrunipython()<CR>
+"map <F5> :py saveandrunpython()<CR>
+"map <C-F5> :py saveandrunipython()<CR>
 map <F6> :py saveandrunnose()<CR>
 map <F4> :py saveandrunnosethis()<CR>
 map <F9> :py opentraceback()<CR>
@@ -362,3 +364,4 @@ function! GreenBar()
     echohl
 endfunction
 
+set enc=utf-8
