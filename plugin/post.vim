@@ -123,6 +123,16 @@ endfunction
 
 function! PostTables()
 
+    if exists("t:tables_buffer")
+        if t:tables_buffer != 0
+            execute  'sb '. t:tables_buffer
+            execute 'q'
+            execute  'sb '. t:post_original_bufnr
+            let t:tables_buffer = 0
+            return
+        endif
+    endif
+            
 
     let custom_command = getline(1)[2:]
 

@@ -122,10 +122,10 @@ map <C-T> :tabnew
 map <C-N> :vnew 
 
 "navigate windows
-map <silent><C-Up> <C-w>k
-map <silent><C-Down> <C-w>j
-map <silent><C-left> <C-w>h
-map <silent><C-Right> <C-w>l
+map <silent><C-Up> <C-w>W
+map <silent><C-Down> <C-w>w
+map <silent><C-left> :tabprevious<CR>
+map <silent><C-Right> :tabnext<CR>
 "navigate using my wierd bindings
 map <silent><C-j> <C-w>h
 map <silent><C-L> <C-w>l
@@ -168,8 +168,8 @@ colorscheme = wombat
 set tags=./../tags,./tags
 set switchbuf=usetab,useopen 
 "runstuff
-"map <F5> :py saveandrunpython()<CR>
-"map <C-F5> :py saveandrunipython()<CR>
+map <F5> :py saveandrunpython()<CR>
+map <C-F5> :py saveandrunipython()<CR>
 map <F6> :py saveandrunnose()<CR>
 map <F4> :py saveandrunnosethis()<CR>
 map <F9> :py opentraceback()<CR>
