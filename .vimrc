@@ -1,7 +1,7 @@
 "gvim options to get rid of title and add tabs all the time.
 set guioptions-=m
 set guioptions-=T
-set gfn=monospace\ 8
+set gfn=monospace\ 10
 set showtabline =2 
 set tabstop=4
 set softtabstop=4
@@ -147,10 +147,10 @@ let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 
 "fuzzy
 
-noremap <c-O> :FufFile! **/<cr>
+noremap <c-O> :FufFile! <cr>
 noremap <c-U> :FufMruFile!<cr>
 
-let g:fuf_mrufile_maxItem = 300
+let g:fuf_mrufile_maxItem = 1000
 let g:fuf_mrucmd_maxItem = 400
 let g:fuf_modesDisable = []
 let g:fuf_keyOpenTabpage = '<cr>'
@@ -363,5 +363,21 @@ function! GreenBar()
     echon repeat(" ",&columns - 1)
     echohl
 endfunction
+
+autocmd BufWriteCmd *.js,*.html,*.css,*.gtpl :call Refresh_firefox()
+
+function! Refresh_firefox()
+    if &modified
+        write
+        silent !echo  'vimYo = content.window.pageYOffset;
+                     \ vimXo = content.window.pageXOffset;
+                     \ BrowserReload();
+                     \ content.window.scrollTo(vimXo,vimYo);
+                     \ repl.quit();'  |
+                     \ nc -q 1 localhost 4242 2>&1 > /dev/null
+    endif
+endfunction 
+
+
 
 set enc=utf-8

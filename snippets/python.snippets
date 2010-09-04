@@ -89,4 +89,7 @@ snippet print
 	print ${2}
 	print "<<===`Filename()`=====`system("date +%Y-%m-%d")`====="
 snippet deb
-	print "<<~~~~`Filename()`~~~~  %s" % ${1}
+	print "<<~~~~`Filename()`~~~~  %s" % "${1}"
+snippet ppr
+	import pprint
+	pprint.pprint(${1})
