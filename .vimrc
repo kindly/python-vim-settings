@@ -1,4 +1,7 @@
 "gvim options to get rid of title and add tabs all the time.
+set nocompatible
+"call pathogen#helptags()
+call pathogen#runtime_append_all_bundles() 
 set guioptions-=m
 set guioptions-=T
 set gfn=monospace\ 10
@@ -14,6 +17,14 @@ set laststatus=2
 let leave_my_cursor_position_alone=1
 set enc=utf-8
 set backspace=2
+:inoremap jj <esc>
+
+:noremap ,sS :call SwapParams("forwards")<cr>
+map ,ss @=',sS'<cr>
+
+:noremap ,,S :call SwapParams("backwards")<cr>
+map ,,s @=',,S'<cr>
+
 " my wierd keybindings, needs a lot of work to get back some functionality
 " especially concerning loss of g key
 :nnoremap j h
@@ -147,6 +158,7 @@ let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 
 "fuzzy
 
+
 noremap <c-O> :FufFile! <cr>
 noremap <c-U> :FufMruFile!<cr>
 
@@ -247,8 +259,35 @@ def saveandrunnosethis():
             vim.command("call GreenBar()")
             print "nose this file fine"
             break
+ 
+EOL
+
+python << EOL
+import vim
+def weeee():
+    buf = vim.current.buffer
+    x1, y1 = buf.mark("<")
+    x2, y2 = buf.mark(">")
+    print x1, y1
+    print x2, y2
+
+
+    lines = []
+    for line in buf[x1-1:x2]:
+        lines.append(line)
+
+    first_line_sel = lines[0][y1:]
+    end_line_sel = lines[-1][:y2+1]
+
+    new_lines = first_line_sel[:y1]
+
+
+    print lines
+
 
 EOL
+
+noremap ,m :py weeee()<CR>
 
 python << EOL
 import vim
@@ -308,18 +347,17 @@ def block_action(action):
     if action == "p":
         if char in ("(", '"', "'", "{", "[" ,"<") :
             vim.command(':normal "_dg%s' % (char) )
-            vim.command(':normal jp')
+            vim.command(':normal P')
             return
         else:
             vim.command(':normal "_dgw' )
             rownew, colnew = vim.current.window.cursor
+            print row, rownew
             line = vim.current.buffer[rownew-1]
-            if len(line) == colnew+1:
-                vim.command(':normal p')
-            elif colnew == 0:
+            if col == colnew or colnew <> len(line)-1:
                 vim.command(':normal P')
-            else:    
-                vim.command(':normal jp')
+            else:
+                vim.command(':normal p')
             return
         
     if char in ("(", '"', "'", "{", "[" ,"<") :
