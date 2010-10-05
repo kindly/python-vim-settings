@@ -226,8 +226,8 @@ command! -buffer -nargs=1 VimwikiGoto call vimwiki#goto("<args>")
 
 " table commands
 command! -buffer -nargs=* VimwikiTable call vimwiki_tbl#create(<f-args>)
-command! -buffer VimwikiTableAlignQ call vimwiki_tbl#align_or_cmd('gqq')
-command! -buffer VimwikiTableAlignW call vimwiki_tbl#align_or_cmd('gww')
+command! -buffer VimwikiTableAlignQ call vimwiki_tbl#align_or_cmd('aqq')
+command! -buffer VimwikiTableAlignW call vimwiki_tbl#align_or_cmd('aww')
 command! -buffer VimwikiTableMoveColumnLeft call vimwiki_tbl#move_column_left()
 command! -buffer VimwikiTableMoveColumnRight call vimwiki_tbl#move_column_right()
 
@@ -272,7 +272,7 @@ noremap <silent><script><buffer>
       \ <Plug>VimwikiGoBackLink :VimwikiGoBackLink<CR>
 
 if !hasmapto('<Plug>VimwikiNextLink')
-  nmap <silent><buffer> <TAB> <Plug>VimwikiNextLink
+  nmap <silent><buffer> <Space> <Plug>VimwikiNextLink
 endif
 noremap <silent><script><buffer>
       \ <Plug>VimwikiNextLink :VimwikiNextLink<CR>
@@ -334,12 +334,12 @@ nnoremap <buffer> O :call vimwiki_lst#kbd_oO('O')<CR>a
 
 " Table mappings
 if g:vimwiki_table_auto_fmt
-  inoremap <expr> <buffer> <Tab> vimwiki_tbl#kbd_tab()
-  inoremap <expr> <buffer> <S-Tab> vimwiki_tbl#kbd_shift_tab()
+  inoremap <expr> <buffer> <tab> vimwiki_tbl#kbd_tab()
+  inoremap <expr> <buffer> <S-tab> vimwiki_tbl#kbd_shift_tab()
 endif
 
-nnoremap <buffer> gqq :VimwikiTableAlignQ<CR>
-nnoremap <buffer> gww :VimwikiTableAlignW<CR>
+nnoremap <buffer> aqq :VimwikiTableAlignQ<CR>
+nnoremap <buffer> aww :VimwikiTableAlignW<CR>
 nnoremap <buffer> <A-Left> :VimwikiTableMoveColumnLeft<CR>
 nnoremap <buffer> <A-Right> :VimwikiTableMoveColumnRight<CR>
 

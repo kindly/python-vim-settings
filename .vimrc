@@ -25,6 +25,11 @@ map ,ss @=',sS'<cr>
 :noremap ,,S :call SwapParams("backwards")<cr>
 map ,,s @=',,S'<cr>
 
+"vimwiki
+
+let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'path_html': '~/Dropbox/vimwiki_html/', 'auto_export': 1}]
+set dir=~/tmp
+
 " my wierd keybindings, needs a lot of work to get back some functionality
 " especially concerning loss of g key
 :nnoremap j h
@@ -125,23 +130,23 @@ map ,,s @=',,S'<cr>
 :nnoremap <c-cr> :tab sts<cr>
 "some less odd potentially useful keybindings for working with tabs and
 "windows
-map <silent><A-Right> :tabnext<CR>
-map <silent><A-Left> :tabprevious<CR>
+nnoremap <silent><A-Right> :tabnext<CR>
+nnoremap <silent><A-Left> :tabprevious<CR>
 
 "open new things
-map <C-T> :tabnew 
-map <C-N> :vnew 
+nnoremap <C-T> :tabnew 
+nnoremap <C-N> :vnew 
 
 "navigate windows
-map <silent><C-Up> <C-w>W
-map <silent><C-Down> <C-w>w
-map <silent><C-left> :tabprevious<CR>
-map <silent><C-Right> :tabnext<CR>
+nnoremap <silent><C-Up> <C-w>W
+nnoremap <silent><C-Down> <C-w>w
+nnoremap <silent><C-left> :tabprevious<CR>
+nnoremap <silent><C-Right> :tabnext<CR>
 "navigate using my wierd bindings
-map <silent><C-j> <C-w>h
-map <silent><C-L> <C-w>l
-map <silent><C-k> <C-w>j
-map <silent><C-i> <C-w>k
+nnoremap <silent><C-j> <C-w>h
+nnoremap <silent><C-L> <C-w>l
+nnoremap <silent><C-k> <C-w>j
+nnoremap <silent><C-i> <C-w>k
 
 " local or local window competion only
 "inoremap <C-SPACE> <C-x><C-l>
