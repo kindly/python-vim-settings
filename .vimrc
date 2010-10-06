@@ -30,75 +30,43 @@ map ,,s @=',,S'<cr>
 let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'path_html': '~/Dropbox/vimwiki_html/', 'auto_export': 1}]
 set dir=~/tmp
 
-" my wierd keybindings, needs a lot of work to get back some functionality
-" especially concerning loss of g key
-:nnoremap j h
-:nnoremap i k
-:nnoremap l l
-:nnoremap k j
-:vnoremap j h
-:vnoremap i k
-:vnoremap l l
-:vnoremap k j
-:onoremap j h
-:onoremap i k
-:onoremap l l
-:onoremap k j
-
-:nnoremap ai gk
-:nnoremap al gl
-:nnoremap aj gh
-:nnoremap ak gj
-
-:inoremap <c-j> <LEFT>
-:inoremap <c-i> <UP>
+:inoremap <c-h> <LEFT>
+:inoremap <c-k> <UP>
 :inoremap <c-l> <RIGHT>
-:inoremap <c-k> <DOWN>
-:cnoremap <c-j> <LEFT>
+:inoremap <c-j> <DOWN>
+:cnoremap <c-h> <LEFT>
 :cnoremap <c-l> <RIGHT>
 
 :cnoremap <m-l> <END>
-:cnoremap <m-j> <HOME>
+:cnoremap <m-h> <HOME>
 :inoremap <m-l> <END>
-:inoremap <m-j> <HOME>
+:inoremap <m-h> <HOME>
 
-:inoremap <m-i> <PageUp>
-:inoremap <m-k> <PageDown>
+:inoremap <m-k> <PageUp>
+:inoremap <m-j> <PageDown>
 
 
-:nnoremap I <C-U>
-:nnoremap K <C-D>
+:nnoremap K <C-U>
+:nnoremap J <C-D>
 :nnoremap L <End>
-:nnoremap J <Home>
-:vnoremap I <C-U>
-:vnoremap K <C-D>
+:nnoremap H <Home>
+:vnoremap K <C-U>
+:vnoremap J <C-D>
 :vnoremap L <End>
-:vnoremap J <Home>
-:onoremap I <C-U>
-:onoremap K <C-D>
+:vnoremap H <Home>
+:onoremap K <C-U>
+:onoremap J <C-D>
 :onoremap L <End>
-:onoremap J <Home>
+:onoremap H <Home>
 
-:noremap <m-i> gg
-:noremap <leader>i gg
-:noremap <m-k> G
-:noremap <leader>k G
-
-:nnoremap g i
-:nnoremap h a
-:nnoremap G I
-:nnoremap H A
-:vnoremap g i
-:vnoremap h a
-:vnoremap G I
-:vnoremap H A
-
-:nnoremap a g
-:nnoremap A G
+:noremap <m-k> gg
+:noremap <leader>k gg
+:noremap <m-j> G
+:noremap <leader>j G
 
 
-:noremap <m-j> :tabprevious<CR>
-:noremap <leader>j :tabprevious<CR>
+:noremap <m-h> :tabprevious<CR>
+:noremap <leader>h :tabprevious<CR>
 :noremap <m-l> :tabnext<CR>
 :noremap <leader>l :tabnext<CR>
 
@@ -112,18 +80,10 @@ set dir=~/tmp
 
 :noremap <C-b> gJ
 
-:onoremap gw iw
-:onoremap g" i"
-:onoremap g' i'
-:onoremap g( i(
-:onoremap g{ i{
-:onoremap g[ i[
-:onoremap g< i<
-
-:noremap <C-c> :py block_action('c')<CR>a
-:noremap <C-d> :py block_action('d')<CR>
-:noremap <C-p> :py block_action('p')<CR>
-:noremap <C-y> :py block_action('y')<CR>
+:noremap <C-c> :call BlockAction('c')<CR>
+:noremap <C-d> :call BlockAction('d')<CR>
+:noremap <C-p> :call BlockAction('p')<CR>
+:noremap <C-y> :call BlockAction('y')<CR>
 
 :nnoremap <CR> g<c-]>
 :nnoremap <BS> <c-t>
@@ -143,10 +103,10 @@ nnoremap <silent><C-Down> <C-w>w
 nnoremap <silent><C-left> :tabprevious<CR>
 nnoremap <silent><C-Right> :tabnext<CR>
 "navigate using my wierd bindings
-nnoremap <silent><C-j> <C-w>h
-nnoremap <silent><C-L> <C-w>l
-nnoremap <silent><C-k> <C-w>j
-nnoremap <silent><C-i> <C-w>k
+nnoremap <silent><C-h> <C-w>h
+nnoremap <silent><C-l> <C-w>l
+nnoremap <silent><C-j> <C-w>j
+nnoremap <silent><C-k> <C-w>k
 
 " local or local window competion only
 "inoremap <C-SPACE> <C-x><C-l>
@@ -292,7 +252,6 @@ def weeee():
 
 EOL
 
-noremap ,m :py weeee()<CR>
 
 python << EOL
 import vim
@@ -341,6 +300,51 @@ def openjslint():
         vim.command(r":tabnew %s" % r[0])
     vim.command(r":%s" % (int(r[1]) + 1))
 EOL
+
+
+if (exists("*SaveAndSource") == 0)
+    fu SaveAndSource()
+        :w
+        :source %
+    endf
+endif
+
+
+fu! BlockAction(action)
+ 	let current = getline(".")[col(".") - 1]
+    let cur_col = col(".")
+    let cur_line = line(".")
+    let all_braces = ["(", '"', "'", "{", "[" ,"<"]
+    if (a:action == "p")
+        if (count(all_braces, current) == 1)
+            let command = ':normal "_di' . current
+            exe command
+            normal P
+        else
+            exe 'normal "_diw'
+            let cur_col_new = col(".")
+            let cur_line_new = line(".")
+            let line_len = len(getline("."))
+            let new_char = getline(".")[col(".") - 1]
+            if (cur_col_new != line_len || new_char != " ")
+                normal P
+            else
+                normal p
+            endif
+        endif
+    else
+        if (count(all_braces, current) == 1) 
+            let command = ":normal " . a:action . "i" . current
+        else
+            let command = ":normal " . a:action . "iw"
+        endif
+        exe command
+    endif
+endf
+
+map ,,, :call SaveAndSource()<cr>
+
+
 
 
 python << EOL
