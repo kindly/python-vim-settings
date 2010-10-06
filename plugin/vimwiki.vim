@@ -376,7 +376,7 @@ endfunction
 function! s:build_table_menu(topmenu)
   exe 'menu '.a:topmenu.'.-Sep- :'
   exe 'menu '.a:topmenu.'.Table.Create\ (enter\ cols\ rows) :VimwikiTable '
-  exe 'nmenu '.a:topmenu.'.Table.Format<tab>aqq aqq'
+  exe 'nmenu '.a:topmenu.'.Table.Format<tab>gqq gqq'
   exe 'nmenu '.a:topmenu.'.Table.Move\ column\ left<tab><A-Left> :VimwikiTableMoveColumnLeft<CR>'
   exe 'nmenu '.a:topmenu.'.Table.Move\ column\ right<tab><A-Right> :VimwikiTableMoveColumnRight<CR>'
   exe 'nmenu disable '.a:topmenu.'.Table'
