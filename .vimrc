@@ -2,6 +2,7 @@
 set nocompatible
 "call pathogen#helptags()
 call pathogen#runtime_append_all_bundles() 
+call pathogen#helptags()
 set guioptions-=m
 set guioptions-=T
 set gfn=monospace\ 10
@@ -18,6 +19,7 @@ let leave_my_cursor_position_alone=1
 set enc=utf-8
 set backspace=2
 :inoremap jj <esc>
+
 
 :noremap ,sS :call SwapParams("forwards")<cr>
 map ,ss @=',sS'<cr>
@@ -80,10 +82,24 @@ set dir=~/tmp
 
 :noremap <C-b> gJ
 
-:noremap <C-c> :call BlockAction('c')<CR>
-:noremap <C-d> :call BlockAction('d')<CR>
-:noremap <C-p> :call BlockAction('p')<CR>
-:noremap <C-y> :call BlockAction('y')<CR>
+:noremap <C-d> :call BlockAction('id')<CR>
+:noremap <C-p> :call BlockAction('ip')<CR>
+:noremap <C-y> :call BlockAction('iy')<CR>
+
+
+:noremap <leader>c :call BlockAction('ic')<CR>
+:noremap <leader>d :call BlockAction('id')<CR>
+:noremap <leader>p :call BlockAction('ip')<CR>
+:noremap <leader>y :call BlockAction('iy')<CR>
+
+:noremap <leader><leader>c :call BlockAction('ac')<CR>
+:noremap <leader><leader>d :call BlockAction('ad')<CR>
+:noremap <leader><leader>p :call BlockAction('ap')<CR>
+:noremap <leader><leader>y :call BlockAction('ay')<CR>
+
+:noremap <leader><leader>s :set spell<CR>
+:noremap <leader><leader>S :set nospell<CR>
+:noremap <leader>s z=
 
 :nnoremap <CR> g<c-]>
 :nnoremap <BS> <c-t>
@@ -137,7 +153,7 @@ let g:fuf_mrufile_exclude = '\.tmp$'
 "basic options
 syntax on
 set hlsearch
-set mouse=a
+set mouse=""
 filetype plugin indent on
 set completeopt=menu,longest
 set wildmode=longest,list
@@ -315,37 +331,31 @@ fu! BlockAction(action)
     let cur_col = col(".")
     let cur_line = line(".")
     let all_braces = ["(", '"', "'", "{", "[" ,"<"]
-    if (a:action == "p")
+    if (a:action[1] == "p")
         if (count(all_braces, current) == 1)
-            let command = ':normal "_di' . current
-            exe command
+            exe 'normal "_d'. a:action[0] . current
+        else
+            exe 'normal "_d' . a:action[0] . "w" 
+        endif
+        let cur_col_new = col(".")
+        let cur_line_new = line(".") 
+        let line_len = len(getline("."))
+        let new_char = getline(".")[col(".") - 1]
+        if (cur_col_new != line_len || cur_col <= line_len)
             normal P
         else
-            exe 'normal "_diw'
-            let cur_col_new = col(".")
-            let cur_line_new = line(".")
-            let line_len = len(getline("."))
-            let new_char = getline(".")[col(".") - 1]
-            if (cur_col_new != line_len || new_char != " ")
-                normal P
-            else
-                normal p
-            endif
+            normal p
         endif
     else
         if (count(all_braces, current) == 1) 
-            let command = ":normal " . a:action . "i" . current
+            exe ":normal " . a:action[1] . a:action[0] . current
         else
-            let command = ":normal " . a:action . "iw"
+            exe ":normal " . a:action[1] . a:action[0] . "w"
         endif
-        exe command
     endif
 endf
 
 map ,,, :call SaveAndSource()<cr>
-
-
-
 
 python << EOL
 import vim
@@ -361,7 +371,6 @@ def block_action(action):
         else:
             vim.command(':normal "_dgw' )
             rownew, colnew = vim.current.window.cursor
-            print row, rownew
             line = vim.current.buffer[rownew-1]
             if col == colnew or colnew <> len(line)-1:
                 vim.command(':normal P')
