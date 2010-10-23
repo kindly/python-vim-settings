@@ -1,8 +1,7 @@
 "gvim options to get rid of title and add tabs all the time.
 set nocompatible
-"call pathogen#helptags()
-call pathogen#runtime_append_all_bundles() 
 call pathogen#helptags()
+call pathogen#runtime_append_all_bundles() 
 set guioptions-=m
 set guioptions-=T
 set gfn=monospace\ 10
@@ -31,6 +30,8 @@ map ,,s @=',,S'<cr>
 
 let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'path_html': '~/Dropbox/vimwiki_html/', 'auto_export': 1}]
 set dir=~/tmp
+
+let space_no_jump=1
 
 :inoremap <c-h> <LEFT>
 :inoremap <c-k> <UP>
@@ -140,8 +141,8 @@ let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 "fuzzy
 
 
-noremap <c-O> :FufFile! <cr>
-noremap <c-U> :FufMruFile!<cr>
+noremap <c-o> :FufFile! <cr>
+noremap <c-u> :FufMruFile!<cr>
 
 let g:fuf_mrufile_maxItem = 1000
 let g:fuf_mrucmd_maxItem = 400
