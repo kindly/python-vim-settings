@@ -48,6 +48,8 @@ let space_no_jump=1
 :inoremap <m-k> <PageUp>
 :inoremap <m-j> <PageDown>
 
+:nnoremap <S-RIGHT> :cn<cr>
+:nnoremap <S-LEFT> :cp<cr>
 
 :nnoremap K <C-U>
 :nnoremap J <C-D>
@@ -141,16 +143,24 @@ let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 "fuzzy
 
 
-noremap <c-o> :FufFile! <cr>
+noremap ,,t :FufTag!<cr>
+noremap ,t :FufBufferTagAll!<cr>
+noremap ,tt :FufBufferTag!<cr>
+noremap <c-o> :FufFile!**/<cr>
 noremap <c-u> :FufMruFile!<cr>
 
 let g:fuf_mrufile_maxItem = 1000
 let g:fuf_mrucmd_maxItem = 400
 let g:fuf_modesDisable = []
 let g:fuf_keyOpenTabpage = '<cr>'
-let g:fuf_keyOpen = '<c-l>'
+let g:fuf_keyOpen = '<c-o>'
+let g:fuf_keyOpenVsplit = '<C-l>'
 let g:fuf_mrufile_exclude = '\.tmp$'
+let g:fuf_mrufile_keyExpand = '<c-u>'
 
+"no jump for space
+let g:space_no_jump = 1
+let g:space_no_search = 1
 "basic options
 syntax on
 set hlsearch
@@ -159,7 +169,7 @@ filetype plugin indent on
 set completeopt=menu,longest
 set wildmode=longest,list
 colorscheme = wombat
-set tags=./../tags,./tags
+set tags=./../tags,./tags,./../../tags,./../../../tags
 set switchbuf=usetab,useopen 
 "runstuff
 map <F5> :py saveandrunpython()<CR>
@@ -191,8 +201,9 @@ noremap <leader>hl <C-o>
 noremap <leader>hn <C-i>
 noremap <leader>hp <C-o>
 
+noremap <leader>/ :PyFind 
 
-noremap <c-U> :FufMruFile!<cr>
+
 
 "adds python patha so can find files when used with gf
 python << EOF
@@ -342,7 +353,7 @@ fu! BlockAction(action)
         let cur_line_new = line(".") 
         let line_len = len(getline("."))
         let new_char = getline(".")[col(".") - 1]
-        if (cur_col_new != line_len || cur_col <= line_len)
+        if (cur_col_new != line_len || cur_col == line_len || new_char != " ")
             normal P
         else
             normal p
@@ -420,6 +431,12 @@ function! GreenBar()
     echon repeat(" ",&columns - 1)
     echohl
 endfunction
+
+function! PyFindFunc(find)
+    exec ":vim " . a:find . " " . "**/*.py"
+endfunction
+
+command! -nargs=1 PyFind call PyFindFunc(<q-args>)
 
 autocmd BufWriteCmd *.js,*.html,*.css,*.gtpl :call Refresh_firefox()
 

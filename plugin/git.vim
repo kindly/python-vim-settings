@@ -7,6 +7,7 @@ if !exists('g:git_bufhidden')
 endif
 
 nnoremap <Leader>gd :GitDiff<Enter>
+nnoremap <Leader>md :call HgDiff()<Enter>
 nnoremap <Leader>gD :GitDiff --cached<Enter>
 nnoremap <Leader>gs :GitStatus<Enter>
 nnoremap <Leader>gl :GitLog<Enter>
@@ -85,6 +86,26 @@ endfunction
 " Show diff.
 function! GitDiff(args)
     let git_output = system('git show @{0}:' . s:Expand('%'))
+    let t:git_vimdiff_original_bufnr = bufnr('%')
+    diffthis
+    rightb vnew
+    let t:git_vimdiff_diff = bufnr('%')
+    setlocal buftype=nofile readonly modifiable
+    if !strlen(git_output)
+        echo "No output from git command"
+        return
+    endif
+    silent put=git_output
+    diffthis
+    setlocal nomodifiable
+    let b:is_git_msg_buffer = 1
+    setlocal filetype=git-diff
+    diffupdate
+    execute  'sb '. t:git_vimdiff_original_bufnr
+endfunction
+
+function! HgDiff()
+    let git_output = system('hg cat ' . s:Expand('%'))
     let t:git_vimdiff_original_bufnr = bufnr('%')
     diffthis
     rightb vnew
