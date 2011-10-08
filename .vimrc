@@ -11,7 +11,6 @@ set softtabstop=4
 set shiftwidth=4
 set smarttab
 set expandtab
-set smartindent
 set statusline=%f\ %2*%m\ %1*%h%r%=[%{&encoding}\ %{&fileformat}\ %{strlen(&ft)?&ft:'none'}\ %{getfperm(@%)}]\ 0x%B\ %12.(%c:%l/%L%)
 set laststatus=2
 let leave_my_cursor_position_alone=1
@@ -164,7 +163,6 @@ let g:space_no_search = 1
 "basic options
 syntax on
 set hlsearch
-set mouse=""
 filetype plugin indent on
 set completeopt=menu,longest
 set wildmode=longest,list
