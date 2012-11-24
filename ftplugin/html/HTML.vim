@@ -2,6 +2,8 @@
 
 :let g:no_html_toolbar = 'yes'
 
+set shiftwidth=4
+
 " ---- Author & Copyright: ---------------------------------------------- {{{1
 "
 " Author:      Christian J. Robinson <heptite@gmail.com>

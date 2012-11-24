@@ -4,7 +4,7 @@ call pathogen#helptags()
 call pathogen#runtime_append_all_bundles() 
 set guioptions-=m
 set guioptions-=T
-set gfn=monospace\ 10
+set gfn=ubuntu\ mono\ 12
 set showtabline =2 
 set tabstop=4
 set softtabstop=4
@@ -18,6 +18,9 @@ set enc=utf-8
 set backspace=2
 :inoremap jj <esc>
 
+autocmd FileType html setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType javascript setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+autocmd BufNewFile,BufRead *.json setlocal ft=javascript
 
 :noremap ,sS :call SwapParams("forwards")<cr>
 map ,ss @=',sS'<cr>
@@ -27,7 +30,7 @@ map ,,s @=',,S'<cr>
 
 "vimwiki
 
-let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'path_html': '~/Dropbox/vimwiki_html/', 'auto_export': 1}]
+let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'path_html': '~/Dropbox/vimwiki_html/'}]
 set dir=~/tmp
 
 let space_no_jump=1
@@ -113,7 +116,6 @@ nnoremap <silent><A-Left> :tabprevious<CR>
 
 "open new things
 nnoremap <C-T> :tabnew 
-nnoremap <C-N> :vnew 
 
 "navigate windows
 nnoremap <silent><C-Up> <C-w>W
@@ -145,14 +147,20 @@ let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 noremap ,,t :FufTag!<cr>
 noremap ,t :FufBufferTagAll!<cr>
 noremap ,tt :FufBufferTag!<cr>
-noremap <c-o> :FufFile!**/<cr>
+noremap <C-N> :FufFile!<cr>
 noremap <c-u> :FufMruFile!<cr>
+
+noremap ss :w<cr>
+noremap sl g+
+noremap sj g-
+noremap sk :w<cr>
+noremap si :w<cr>
 
 let g:fuf_mrufile_maxItem = 1000
 let g:fuf_mrucmd_maxItem = 400
 let g:fuf_modesDisable = []
-let g:fuf_keyOpenTabpage = '<cr>'
-let g:fuf_keyOpen = '<c-o>'
+let g:fuf_keyOpenTabpage = '<space>'
+let g:fuf_keyOpen = '<cr>'
 let g:fuf_keyOpenVsplit = '<C-l>'
 let g:fuf_mrufile_exclude = '\.tmp$'
 let g:fuf_mrufile_keyExpand = '<c-u>'
@@ -193,11 +201,11 @@ noremap <leader>cl g;
 noremap <leader>cf g,
 noremap <leader>cb g;
 
-noremap <leader>hf <C-i>
-noremap <leader>hb <C-o>
-noremap <leader>hl <C-o>
-noremap <leader>hn <C-i>
-noremap <leader>hp <C-o>
+noremap <leader>jf <C-i>
+noremap <leader>jb <C-o>
+noremap <leader>jl <C-o>
+noremap <leader>jn <C-i>
+noremap <leader>jp <C-o>
 
 noremap <leader>/ :PyFind 
 
@@ -438,6 +446,7 @@ command! -nargs=1 PyFind call PyFindFunc(<q-args>)
 
 autocmd BufWriteCmd *.js,*.html,*.css,*.gtpl :call Refresh_firefox()
 
+
 function! Refresh_firefox()
     if &modified
         write
@@ -450,6 +459,15 @@ function! Refresh_firefox()
     endif
 endfunction 
 
-
-
+set grepprg=git\ grep\ -n  
 set enc=utf-8
+
+vnoremap < <gv
+vnoremap > >gv
+map Y y$
+
+nnoremap j gj
+nnoremap k gk
+
+au BufWritePost .vimrc so ~/.vimrc
+cmap w!! %!sudo tee > /dev/null %
